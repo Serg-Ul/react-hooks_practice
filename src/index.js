@@ -3,12 +3,44 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createAction, configureStore} from "@reduxjs/toolkit";
+import {Provider} from "react-redux";
+
+
+const INCREMENT = 'INCREMENT'
+
+export const incrementAction = createAction(INCREMENT);
+
+const initialState = {
+    counter: {
+        value: 0
+    }
+}
+
+const counterReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case INCREMENT:
+            return {
+                count: state.count + 1
+            }
+        default:
+            return state
+    }
+}
+
+const reducer = {
+    counter: counterReducer,
+}
+
+const store = configureStore({
+    reducer
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <Provider store={store}>
+        <App/>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
